@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practical 13: AI API Integration - Maitri Sheta (D25CS120)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header matching Practical 10, 11, 12 -->
+        <header>
+            <h1>Practical 13: AI API Integration into a Web Application</h1>
+            <p>Secure server-side AI integration with OpenAI/Gemini & Responsible AI practices</p>
+        </header>
+
+        <!-- Notification Banner -->
+        <div id="toast" class="toast hidden"></div>
+
+        <div class="grid-layout">
+            <!-- Left Column: Task Creation with AI Assistant -->
+            <div class="column">
+                <div class="card">
+                    <h2>➕ Create Task with AI Assistant</h2>
+                    <p class="card-desc">Type a title and click "Generate with AI" for an auto-generated description & priority</p>
+
+                    <form id="create-task-form">
+                        <div class="form-group">
+                            <label for="task-title">Task Title *</label>
+                            <div style="display: flex; gap: 6px;">
+                                <input type="text" id="task-title" placeholder="e.g. Conduct Unit Testing for Authentication Module" required style="flex: 1;">
+                                <button type="button" id="btn-generate-ai" class="btn btn-ai" title="Call secure server-side AI endpoint">
+                                    <span id="ai-btn-text">✨ Generate AI</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Quick suggestion chips -->
+                        <div class="suggestions-bar">
+                            <span class="chip-label">Try:</span>
+                            <button type="button" class="chip" data-title="Prepare AWDF Practical 13 Lab Submission">Lab Submission</button>
+                            <button type="button" class="chip" data-title="Optimize MongoDB Query Performance & Indexing">DB Indexing</button>
+                            <button type="button" class="chip" data-title="Urgent Security Audit & Dependency Vulnerability Patch">Security Audit</button>
+                        </div>
+
+                        <div class="form-group">
+                            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                                <label for="task-desc">Task Description</label>
+                                <span id="ai-badge" class="ai-pill hidden">✨ AI Generated (Editable)</span>
+                            </div>
+                            <textarea id="task-desc" rows="3" placeholder="Click 'Generate AI' above or enter a description manually..."></textarea>
+                            <small class="disclaimer-text">
+                                ⚖️ <strong>Responsible AI Disclaimer:</strong> AI suggestions are editable drafts. Review before saving.
+                            </small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="task-priority">Priority</label>
+                            <select id="task-priority">
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="task-user">Assigned Student / ID</label>
+                            <input type="text" id="task-user" value="Maitri Sheta (D25CS120)" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Create Task (POST /tasks)</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h2>Existing Tasks</h2>
+                    <p class="card-desc">Saved tasks with AI origin indicator</p>
+                    <ul id="tasks-list" class="tasks-list"></ul>
+                </div>
+            </div>
+
+            <!-- Right Column: AI Security Status & Responsible AI -->
+            <div class="column">
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <h2>🤖 AI Security & Architecture</h2>
+                        <div style="display: flex; gap: 6px;">
+                            <button id="btn-check-health" class="btn btn-sm btn-primary">Check Security</button>
+                            <button id="btn-clear-logs" class="btn btn-sm btn-secondary">Clear</button>
+                        </div>
+                    </div>
+                    <p class="card-desc">
+                        Route: <code>POST /api/ai/generate-description</code> &bull; Key: <code>Server-side (.env)</code>
+                    </p>
+
+                    <!-- Security & AI Specs Grid -->
+                    <div class="ai-specs-grid">
+                        <div class="spec-tile">
+                            <strong>API Key Storage</strong>
+                            <span class="spec-status ok">Server-side Only (.env)</span>
+                        </div>
+                        <div class="spec-tile">
+                            <strong>Client Exposure</strong>
+                            <span class="spec-status ok">0% (Key hidden from DevTools)</span>
+                        </div>
+                        <div class="spec-tile">
+                            <strong>Graceful Degradation</strong>
+                            <span class="spec-status ok">Active (Fallback Engine)</span>
+                        </div>
+                        <div class="spec-tile">
+                            <strong>Rate Limiting</strong>
+                            <span class="spec-status ok">Active (Per-task cooldown)</span>
+                        </div>
+                    </div>
+
+                    <div id="logs-container" class="logs-container">
+                        <p style="text-align: center; color: #888; padding: 15px;">
+                            Click "Generate AI" or "Check Security" to observe live API logs.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>⚖️ Responsible AI & Ethical Checklist</h2>
+                    <ul style="font-size: 0.85rem; padding-left: 20px; color: #4a5568; line-height: 1.6;">
+                        <li><strong>1. Data Privacy:</strong> Never pass passwords, secrets, PII, or confidential enterprise data to third-party models.</li>
+                        <li><strong>2. Human-in-the-Loop:</strong> The AI response is presented as an editable suggestion rather than an enforced final decision.</li>
+                        <li><strong>3. Explicit Transparency:</strong> Clear disclaimers notify the user that content was generated by an AI assistant.</li>
+                        <li><strong>4. Graceful Degradation:</strong> If the external AI service fails, times out, or quota runs out, the core Task application continues operating smoothly without crashing.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>AWDF Practical 13 &bull; Maitri Sheta (D25CS120) &bull; CSE, CSPIT &bull; Charotar University of Science and Technology</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

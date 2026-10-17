@@ -1,0 +1,26 @@
+{
+  "name": "practical-13-ai-integration",
+  "version": "1.0.0",
+  "description": "AI API Integration into a Web Application - Maitri Sheta (D25CS120)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "ai-integration",
+    "openai",
+    "gemini",
+    "express",
+    "responsible-ai"
+  ],
+  "author": "Maitri Sheta (D25CS120)",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.10.1",
+    "openai": "^4.85.4"
+  }
+}
